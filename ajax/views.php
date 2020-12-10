@@ -1,8 +1,14 @@
 <?php
+$getView = false;
+$getAjax = true;
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once '../controller/viewsController.php';
+
+//$data_encode = file_get_contents("php://input");
+//$data = json_decode($data_encode);
+$view = $_REQUEST["view"];
+//$view = $data->view;
+
+$controller = new viewsController();
+$controller->get_view_controller($view);
 

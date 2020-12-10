@@ -10,7 +10,7 @@
                     CASOS DE ESTUDIO
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">REGISTRAR</a>
+                    <a class="dropdown-item registro-caso-estudio" href="javascript:void(0)">REGISTRAR</a>
                     <a class="dropdown-item" href="#">VER</a>
                 </div>
             </li>

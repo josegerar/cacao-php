@@ -1,5 +1,10 @@
 <?php
-require_once "./models/viewsModel.php";
+if($getAjax == true){
+    require_once "../models/viewsModel.php";
+} else {
+    require_once "./models/viewsModel.php";
+}
+
 class viewsController extends viewsModel
 {
 
@@ -7,14 +12,13 @@ class viewsController extends viewsModel
     {
         return require_once "./views/plantilla.php";
     }
-    public function get_view_controller()
+    public function get_view_controller($view)
     {
-        if (isset($_GET['views'])) {
-            $path = explode("/", $_GET['views']);
-            $response = viewsModel::get_view_model($path[0]);
+        if (isset($view)) {
+            $response = viewsModel::get_view_model($view);
         } else {
-            $response = "login";
+            $response = viewsModel::get_view_error();
         }
-        return $response;
+        return require_once $response;
     }
 }

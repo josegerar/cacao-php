@@ -1,25 +1,35 @@
 <?php
-class viewsModel
-{
 
-    protected function get_view_model($views)
-    {
+class viewsModel {
+    
+    public $dir = "";
+
+    function __construct() {
+        if ($GLOBALS['getAjax'] === true) {
+            $this->dir = "..";
+        } else {
+            $this->dir = ".";
+        }
+    }
+
+    protected function get_view_model($views) {
         $listaBlanca = [
-            "home", "login"
+            "home", "login", "caso_estudio", "casos_estudio"
         ];
         if (in_array($views, $listaBlanca)) {
-            if (is_file("./views/contents/" . $views . "-view.php")) {
-                $content = "./views/contents/" . $views . "-view.php";
+            if (is_file($this->dir . "/views/contents/" . $views . "-view.php")) {
+                $content = $this->dir . "/views/contents/" . $views . "-view.php";
             } else {
-                $content = "login";
+                $content = $this->get_view_error();
             }
-        } elseif ($views == "login") {
-            $content = "login";
-        } elseif ($views == "index") {
-            $content = "login";
         } else {
-            $content = "404";
+            $content = $this->get_view_error();
         }
         return $content;
     }
+
+    function get_view_error() {
+        return $this->dir . "/views/contents/page_404-view.php";
+    }
+
 }
