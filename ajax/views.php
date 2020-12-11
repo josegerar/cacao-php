@@ -1,6 +1,7 @@
 <?php
 $getView = false;
 $getAjax = true;
+$ROOT = "..";
 
 require_once '../controller/viewsController.php';
 

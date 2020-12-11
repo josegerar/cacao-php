@@ -2,6 +2,7 @@
 
 $getAjax = false;
 $getView = false;
+$ROOT = ".";
 session_start();
 
 require_once "./config/config.php";
