@@ -7,9 +7,9 @@ if ($getAjax) {
 class muestrasModel extends mainModel
 {
     public function getModels(){
-        $result =  mainModel::getConnection()->prepare("select * from muestra");
-        $result ->execute();
-        $result = $result->fetchAll( PDO::FETCH_OBJ );
+        $query =  mainModel::getConnection()->prepare("select * from muestra");
+        $query ->execute();
+        $result = $query->fetchAll( PDO::FETCH_OBJ );
         return $result;
     }
 }

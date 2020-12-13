@@ -1,9 +1,7 @@
 <?php
-if ($getAjax) {
-    require_once "../config/configApp.php";
-} else {
-    require_once "./config/configApp.php";
-}
+
+require_once $GLOBALS['ROOT'] . "/config/configApp.php";
+
 class mainModel
 {
     protected static function getConnection()

@@ -1,3 +1,14 @@
+<?php
+require_once $GLOBALS['ROOT'] . "/models/SuelosModel.php";
+require_once $GLOBALS['ROOT'] . "/models/BosquesModel.php";
+
+$sModel = new SuelosModel();
+$suelos = $sModel->getSuelos();
+
+$bModel = new BosquesModel();
+$bosques = $bModel->getBosques();
+?>
+
 <div class="modal fade" id="modalnuevalocalidad" tabindex="-1" role="dialog" aria-labelledby="modalnuevalocalidadTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -8,7 +19,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formNuevaLocalidad" >
+                <form id="formNuevaLocalidad" class="small">
                     <div class="form-group row">
                         <label for="ciudadloc" class="col-sm-2 col-form-label">Ciudad:</label>
                         <div class="col-sm-10">
@@ -25,11 +36,11 @@
                         <label for="tiposuelo" class="col-sm-2 col-form-label">Tipo de suelo:</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="tiposuelo">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <?php foreach ($suelos as $suelo) { ?>
+                                    <option value="<?php echo $suelo->id; ?>"><?php echo $suelo->nombre; ?></option>
+                                    <?php
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -37,11 +48,11 @@
                         <label for="tipobosque" class="col-sm-2 col-form-label">Tipo de bosque:</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="tipobosque">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <?php foreach ($bosques as $bosque) { ?>
+                                    <option value="<?php echo $bosque->id; ?>"><?php echo $bosque->nombre; ?></option>
+                                    <?php
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
