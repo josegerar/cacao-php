@@ -29,7 +29,7 @@ $tiposCacao = $cModel->getTiposCacao();
                 <form id="formNuevaMuestra"  class="small">
                     <div class="form-group row">
                         <label for="tipoCacaotb" class="col-sm-2 col-form-label">Tipo de cacao:</label>
-                        <div class="col-sm-10 position-relative" style="overflow-y: scroll; max-height: 160px;">
+                        <div class="col-sm-10 position-relative table-responsive-lg" style="overflow-y: scroll; max-height: 160px;">
                             <table class="table table-hover table-sm" id="tipoCacaotb" >     
                                 <thead>
                                     <tr>
@@ -88,10 +88,10 @@ $tiposCacao = $cModel->getTiposCacao();
                     </div>
                     <div class="form-group row">
                         <label for="tbregistrofermentacion" class="col-sm-2 col-form-label">Registro fermentacion: 
-                            <input class="btn btn-light btn-outline-secondary btn-sm" type="button" value="Añadir">
+
                         </label>
                         <div class="col-sm-10">
-                            <table id="tbregistrofermentacion" class="table table-hover small">
+                            <table id="tbregistrofermentacion" class="table table-hover table-sm">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -110,7 +110,10 @@ $tiposCacao = $cModel->getTiposCacao();
                                         <td><input type="number" class="form-control" ></td>
                                         <td><input type="number" class="form-control" ></td>
                                         <td>
-                                            <input class="btn btn-light btn-outline-secondary btn-sm" type="button" value="Eliminar">
+                                            <div class="form-group row justify-content-center">
+                                                <button type="button" class="btn btn-light btn-outline-secondary btn-sm"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-light btn-outline-secondary btn-sm"><i class="fa fa-trash fa-2" aria-hidden="true"></i></i></button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -206,24 +209,28 @@ $tiposCacao = $cModel->getTiposCacao();
     function agregarTipoCacao() {
         var tb = $('#tipoCacaotb tbody');
         var selectCacao = $('<select>', {
-            id: 'autor' + cont1,
             class: 'form-control',
-            name: 'autor',
-            style: 'width: 413px; height: 40px;'
+            name: 'autor'
         });
-        tiposCacao.forEach((item, index)=>{
-            var opt = $('<option>',{
+        tiposCacao.forEach((item, index) => {
+            var opt = $('<option>', {
                 'value': item.value,
                 'text': item.text
             });
             selectCacao.append(opt);
         });
+        var colNum = $('<th>', {
+            'scope': 'row',
+            'text': cont1
+        });
         var colText = $('<td>').append(selectCacao);
-        var div = $('<button type="button" class="btn btn-light btn-outline-secondary" onclick="agregarTipoCacao()">Agregar</button>');
-        var div2 = $('<button type="button" class="btn btn-light btn-outline-secondary" onclick="borrarFila(' + "'ftipoCacao" + cont1 + "'" + ',' + "'tipoCacaotb'" + ')">Eliminar</button>');
-        var colButtondel = $('<td>').append(div2);
-        var colButtoadd = $('<td>').append(div);
-        $('<tr>', {id: 'ftipoCacao' + cont1}).append(colText).append(colButtoadd).append(colButtondel).appendTo(tb);
+        var div = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarTipoCacao()">Agregar</button>');
+        var div2 = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'ftipoCacao" + cont1 + "'" + ',' + "'tipoCacaotb'" + ')">Eliminar</button>');
+        var colButtondel = $('<td>').append(div).append(div2);
+        $('<tr>', {id: 'ftipoCacao' + cont1}).append(colNum)
+                .append(colText)
+                .append(colButtondel)
+                .appendTo(tb);
         cont1++;
     }
     //Se borra la fila creada de autores
