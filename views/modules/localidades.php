@@ -5,7 +5,7 @@
         </button>
     </div>
     <div class="form-group row">
-        <table class="table table-hover">
+        <table id="tblocalidades" class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -18,18 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Caso 1</td>
-                    <td>Descripcion 1</td>
-                    <td>Ubicacion 1</td>
-                    <td>Altitud</td>
-                    <td><input class="btn btn-light btn-outline-secondary" type="button" value="Muestras"></td>
-                    <td>
-                        <input class="btn btn-light btn-outline-secondary" type="button" value="Editar">
-                        <input class="btn btn-light btn-outline-secondary" type="button" value="Eliminar">
-                    </td>
-                </tr>
+
             </tbody>
         </table>
     </div>
@@ -41,12 +30,51 @@
 </form>
 
 <script>
+
+    var contFTBL = 0;
+
     document.getElementById("btnAtras1").addEventListener("click", function () {
+        $('#registrar-caso-estudio-tab a[href="#nav-caso-estudio"]').removeClass('disabled');
         $('#registrar-caso-estudio-tab a[href="#nav-caso-estudio"]').tab('show');
+        $('#registrar-caso-estudio-tab a[href="#nav-caso-estudio"]').addClass('disabled');
     });
     document.getElementById("btnSiguiente2").addEventListener("click", function () {
         $('#registrar-caso-estudio-tab a[href="#nav-muestras"]').tab('show');
     });
+</script>
+<script>
+    function addLocalidadesTable(data, edit, row) {
+        var tb = $('#tblocalidades tbody');
+        var colNum = $('<th>', {
+            'scope': 'row',
+            'text': ($('#tblocalidades tbody tr').length + 1)
+        });
+        var colCiudad = $('<td>', {'text': data.ciudad});
+        var colDescripcion = $('<td>', {'text': data.detalle});
+        var colUbicacion = $('<td>', {'text': data.ubicacion.lat + ',' + data.ubicacion.lng});
+        var colAltitud = $('<td>', {'text': data.altitud});
+        var colMuestras = $('<td><input class="btn btn-light btn-outline-secondary btn-sm" type="button" value="Muestras"></td>');
+        var btnEdit = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="editarLocalidad(' + "'flocalidades" + contFTBL + "'" + ')"><i class="fa fa-pencil-square-o fa-2" aria-hidden="true"></i></button>');
+        var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'flocalidades" + contFTBL + "'" + ',' + "'tblocalidades'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
+        var colBTNS = $('<td>').append(btnEdit).append(btnDel);
+        var filalocalidad = $('<tr>', {id: 'flocalidades' + contFTBL});
+        filalocalidad.data("data", data);
+        filalocalidad.append(colNum)
+                .append(colCiudad)
+                .append(colDescripcion)
+                .append(colUbicacion)
+                .append(colAltitud)
+                .append(colMuestras)
+                .append(colBTNS)
+                .appendTo(tb);
+        contFTBL++;
+    }
+</script>
+
+<script>
+    function editarLocalidad() {
+
+    }
 </script>
 
 <?php

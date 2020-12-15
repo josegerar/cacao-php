@@ -57,51 +57,51 @@ $bosques = $bModel->getBosques();
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="altitud" class="col-sm-2 col-form-label">Altitud(m):</label>
+                        <label for="altitudloc" class="col-sm-2 col-form-label">Altitud(m):</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="altitud" placeholder="Ingrese la alttiud del terreno(msnm)">
+                            <input type="number" class="form-control" id="altitudloc" placeholder="Ingrese la alttiud del terreno(msnm)">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="temperaturamediaanual" class="col-sm-2 col-form-label">Temperatura(°C):</label>
+                        <label for="temperaturamediaanualloc" class="col-sm-2 col-form-label">Temperatura(°C):</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="temperaturamediaanual" placeholder="Ingrese la temperatura media de la localidad">
+                            <input type="number" class="form-control" id="temperaturamediaanualloc" placeholder="Ingrese la temperatura media de la localidad">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="precipitacionmediaanual" class="col-sm-2 col-form-label">Precipitacion media anual:</label>
+                        <label for="precipitacionmediaanualloc" class="col-sm-2 col-form-label">Precipitacion media anual:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="precipitacionmediaanual" placeholder="Ingrese el valor de precipitacion">
+                            <input type="number" class="form-control" id="precipitacionmediaanualloc" placeholder="Ingrese el valor de precipitacion">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="humedadmediaanual" class="col-sm-2 col-form-label">Humedad media anual:</label>
+                        <label for="humedadmediaanualloc" class="col-sm-2 col-form-label">Humedad media anual:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="humedadmediaanual" placeholder="Ingrese el valor de humedad del ambiente">
+                            <input type="number" class="form-control" id="humedadmediaanualloc" placeholder="Ingrese el valor de humedad del ambiente">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="phsuelo" class="col-sm-2 col-form-label">PH del suelo:</label>
+                        <label for="phsueloloc" class="col-sm-2 col-form-label">PH del suelo:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="phsuelo" placeholder="Ingrese el valor del PH del suelo">
+                            <input type="number" class="form-control" id="phsueloloc" placeholder="Ingrese el valor del PH del suelo">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cicsuelo" class="col-sm-2 col-form-label">CIC del suelo:</label>
+                        <label for="cicsueloloc" class="col-sm-2 col-form-label">CIC del suelo:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="cicsuelo" placeholder="Ingrese el valor del CIC del suelo">
+                            <input type="number" class="form-control" id="cicsueloloc" placeholder="Ingrese el valor del CIC del suelo">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="mosuelo" class="col-sm-2 col-form-label">MO del suelo:</label>
+                        <label for="mosueloloc" class="col-sm-2 col-form-label">MO del suelo:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="mosuelo" placeholder="Ingrese el valor del MO del suelo">
+                            <input type="number" class="form-control" id="mosueloloc" placeholder="Ingrese el valor del MO del suelo">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="velocidadviento" class="col-sm-2 col-form-label">Velocidad del viento:</label>
+                        <label for="velocidadvientoloc" class="col-sm-2 col-form-label">Velocidad del viento:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="velocidadviento" placeholder="Ingrese el valor de la velocidad media del viento">
+                            <input type="number" class="form-control" id="velocidadvientoloc" placeholder="Ingrese el valor de la velocidad media del viento">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -117,12 +117,15 @@ $bosques = $bModel->getBosques();
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar cambios</button>
+                <button id="btnGuardarLocalidad" type="button" class="btn btn-primary">Guardar cambios</button>
             </div>
         </div>
     </div>
 </div>
 <script>
+    
+    var ubicacionLocalidad;
+    
     class Localizacion {
         constructor(callback) {
             if (navigator.geolocation) {
@@ -142,6 +145,7 @@ $bosques = $bModel->getBosques();
         const ubicacion = new Localizacion(() => {
             const posicion = {'lat': ubicacion.lat, 'lng': ubicacion.lng};
             const options = {'center': posicion, 'zoom': 15};
+            ubicacionLocalidad = posicion;
             const texto = `<h1>Mi plantacion</h1><p>Esta es la ubicacion de mi plantacion de cacao</p>`;
             const map = new google.maps.Map(document.getElementById('ubicacionloc'), options);
             const marker = new google.maps.Marker({'position': posicion, 'title': 'Mi ubicacion', 'map': map});
@@ -151,9 +155,33 @@ $bosques = $bModel->getBosques();
             });
             google.maps.event.addListener(map, 'click', function (event) {
                 marker.setPosition(event.latLng);
+                ubicacionLocalidad = {'lat': event.latLng.lat(), 'lng': event.latLng.lng()};
             });
         });
     }
 
     initMap();
+</script>
+
+<script>
+    $(document).on("click", "#btnGuardarLocalidad", function (event) {
+        var loc = {};
+        loc['ciudad'] = $('#ciudadloc').val();
+        loc['detalle'] = $('#detalleloc').val();
+        loc['altitud'] = $('#altitudloc').val();
+        loc['temperatura'] = $('#temperaturamediaanualloc').val();
+        loc['precipitacion'] = $('#precipitacionmediaanualloc').val();
+        loc['humedad'] = $('#humedadmediaanualloc').val();
+        loc['phsuelo'] = $('#phsueloloc').val();
+        loc['cicsuelo'] = $('#cicsueloloc').val();
+        loc['mosuelo'] = $('#mosueloloc').val();
+        loc['velocidadviento'] = $('#velocidadvientoloc').val();
+        loc['tiposuelo'] = $("#tiposuelo option:selected").val();
+        loc['velocidadviento'] = $('#tipobosque option:selected').val();
+        loc['ubicacion'] = ubicacionLocalidad;
+        //caso_estudio_data.localidades.push(loc);
+        addLocalidadesTable(loc);
+        $("#formNuevaLocalidad")[0].reset();
+        $('#modalnuevalocalidad').modal('hide');
+    });
 </script>

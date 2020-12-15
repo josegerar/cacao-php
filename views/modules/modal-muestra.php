@@ -3,6 +3,7 @@ require_once $GLOBALS['ROOT'] . "/models/FermentadorModel.php";
 require_once $GLOBALS['ROOT'] . "/models/CalidadFermentacionModel.php";
 require_once $GLOBALS['ROOT'] . "/models/SecadoModel.php";
 require_once $GLOBALS['ROOT'] . "/models/CacaoModel.php";
+require_once $GLOBALS['ROOT'] . "/models/AnalisisSensorialModel.php";
 
 $fModel = new FermentadorModel();
 $fermentadores = $fModel->getFermentadores();
@@ -15,6 +16,9 @@ $secados = $sModel->getSecados();
 
 $cModel = new CacaoModel();
 $tiposCacao = $cModel->getTiposCacao();
+
+$asModel = new AnalisisSensorialModel();
+$tiposAnalisis = $asModel->getTipoAnalisis();
 ?>
 <div class="modal fade" id="modalnuevamuestra" tabindex="-1" role="dialog" aria-labelledby="modalnuevamuestraTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -29,7 +33,7 @@ $tiposCacao = $cModel->getTiposCacao();
                 <form id="formNuevaMuestra"  class="small">
                     <div class="form-group row">
                         <label for="tipoCacaotb" class="col-sm-2 col-form-label">Tipo de cacao:</label>
-                        <div class="col-sm-10 position-relative table-responsive-lg" style="overflow-y: scroll; max-height: 160px;">
+                        <div class="col-sm-10 position-relative" style="overflow-y: scroll; max-height: 160px;">
                             <table class="table table-hover table-sm" id="tipoCacaotb" >     
                                 <thead>
                                     <tr>
@@ -38,7 +42,7 @@ $tiposCacao = $cModel->getTiposCacao();
                                         <th scope="col">Opciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="cuerpotipoCacao">
+                                <tbody>
 
                                 </tbody>
                             </table>
@@ -90,7 +94,7 @@ $tiposCacao = $cModel->getTiposCacao();
                         <label for="tbregistrofermentacion" class="col-sm-2 col-form-label">Registro fermentacion: 
 
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 position-relative" style="overflow-y: scroll; max-height: 160px;">
                             <table id="tbregistrofermentacion" class="table table-hover table-sm">
                                 <thead>
                                     <tr>
@@ -103,19 +107,7 @@ $tiposCacao = $cModel->getTiposCacao();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td><input type="number" class="form-control" ></td>
-                                        <td><input type="number" class="form-control" ></td>
-                                        <td><input type="number" class="form-control" ></td>
-                                        <td><input type="number" class="form-control" ></td>
-                                        <td>
-                                            <div class="form-group row justify-content-center">
-                                                <button type="button" class="btn btn-light btn-outline-secondary btn-sm"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>
-                                                <button type="button" class="btn btn-light btn-outline-secondary btn-sm"><i class="fa fa-trash fa-2" aria-hidden="true"></i></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -152,9 +144,9 @@ $tiposCacao = $cModel->getTiposCacao();
                     </div>
                     <div class="form-group row">
                         <label for="tbanalisissensorial" class="col-sm-2 col-form-label">Analisis sensorial:
-                            <input class="btn btn-light btn-outline-secondary btn-sm" type="button" value="Añadir">
+
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 position-relative" style="overflow-y: scroll; max-height: 160px;">
                             <table id="tbanalisissensorial" class="table table-hover table-sm">
                                 <thead>
                                     <tr>
@@ -165,22 +157,7 @@ $tiposCacao = $cModel->getTiposCacao();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>
-                                            <select class="form-control" >
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </td>
-                                        <td><input type="number" class="form-control" ></td>
-                                        <td>
-                                            <input class="btn btn-light btn-outline-secondary btn-sm" type="button" value="Eliminar">
-                                        </td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -196,11 +173,19 @@ $tiposCacao = $cModel->getTiposCacao();
 </div>
 <script>
     //Script para generar
-    var cont1 = 0;
+    var contFTC = 0;
+    var contFRF = 0;
+    var contFAS = 0;
     var tiposCacao = [];
+    var tiposAnalisis = [];
 
 <?php foreach ($tiposCacao as $tiposC) { ?>
         tiposCacao.push({'value': '<?php echo $tiposC->id; ?>', 'text': '<?php echo $tiposC->nombre; ?>'});
+    <?php
+}
+?>
+<?php foreach ($tiposAnalisis as $tipoA) { ?>
+        tiposAnalisis.push({'value': '<?php echo $tipoA->id; ?>', 'text': '<?php echo $tipoA->nombre; ?>'});
     <?php
 }
 ?>
@@ -209,8 +194,7 @@ $tiposCacao = $cModel->getTiposCacao();
     function agregarTipoCacao() {
         var tb = $('#tipoCacaotb tbody');
         var selectCacao = $('<select>', {
-            class: 'form-control',
-            name: 'autor'
+            class: 'form-control custom-select'
         });
         tiposCacao.forEach((item, index) => {
             var opt = $('<option>', {
@@ -221,25 +205,89 @@ $tiposCacao = $cModel->getTiposCacao();
         });
         var colNum = $('<th>', {
             'scope': 'row',
-            'text': cont1
+            'text': ($('#tipoCacaotb tbody tr').length + 1)
         });
         var colText = $('<td>').append(selectCacao);
-        var div = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarTipoCacao()">Agregar</button>');
-        var div2 = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'ftipoCacao" + cont1 + "'" + ',' + "'tipoCacaotb'" + ')">Eliminar</button>');
-        var colButtondel = $('<td>').append(div).append(div2);
-        $('<tr>', {id: 'ftipoCacao' + cont1}).append(colNum)
+        var btnADD = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarTipoCacao()"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
+        var btnDEL = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'ftipoCacao" + contFTC + "'" + ',' + "'tipoCacaotb'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
+        var divBTNS = $('<div class="form-group row justify-content-center">');
+        divBTNS.append(btnADD).append(btnDEL);
+        var colButtondel = $('<td>').append(divBTNS);
+        $('<tr>', {id: 'ftipoCacao' + contFTC}).append(colNum)
                 .append(colText)
                 .append(colButtondel)
                 .appendTo(tb);
-        cont1++;
+        contFTC++;
     }
-    //Se borra la fila creada de autores
+    //Se borra la fila creada
     function borrarFila(id_fila, tableName) {
-        var table = document.getElementById(tableName);
-        var cant = table.rows.length;
+        var cant = $('#' + tableName + ' tbody tr').length;
         if (cant > 1) {
             $('#' + id_fila).remove();
+            $.each($('#' + tableName + ' tbody tr'), function (index, item) {
+                $(item).children('th').text(index + 1);
+            });
         }
     }
     agregarTipoCacao();
+</script>
+<script>
+
+    function agregarRegisroFermentacion() {
+        var tb = $('#tbregistrofermentacion tbody');
+        var colNum = $('<th>', {
+            'scope': 'row',
+            'text': ($('#tbregistrofermentacion tbody tr').length + 1)
+        });
+        var colhoraregistro = $('<td><input name="horaregistro" type="number" class="form-control" ></td>');
+        var colphtesta = $('<td><input name="phtesta" type="number" class="form-control" ></td>');
+        var colphcotiledon = $('<td><input name="phcotiledon" type="number" class="form-control" ></td>');
+        var coltemperatura = $('<td><input name="temperatura" type="number" class="form-control" ></td>');
+        var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarRegisroFermentacion()"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
+        var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'fregistrofermentacion" + contFRF + "'" + ',' + "'tbregistrofermentacion'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
+        var divBtns = $('<div class="form-group row justify-content-center"></div>').append(btnAdd).append(btnDel);
+        var colBTNS = $('<td>').append(divBtns);
+        $('<tr>', {id: 'fregistrofermentacion' + contFRF}).append(colNum)
+                .append(colhoraregistro)
+                .append(colphtesta)
+                .append(colphcotiledon)
+                .append(coltemperatura)
+                .append(colBTNS)
+                .appendTo(tb);
+        contFRF++;
+    }
+    agregarRegisroFermentacion();
+</script>
+
+<script>
+    function agregarAnalisisSensorial() {
+        var tb = $('#tbanalisissensorial tbody');
+        var colNum = $('<th>', {
+            'scope': 'row',
+            'text': ($('#tbanalisissensorial tbody tr').length + 1)
+        });
+        var selectAnalisis = $('<select>', {
+            class: 'form-control'
+        });
+        tiposAnalisis.forEach((item, index) => {
+            var opt = $('<option>', {
+                'value': item.value,
+                'text': item.text
+            });
+            selectAnalisis.append(opt);
+        });
+        var colSelect = $('<td>').append(selectAnalisis);
+        var colvalortipo = $('<td><input type="number" class="form-control" ></td>');
+        var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarAnalisisSensorial()"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
+        var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'fanalisissensorial" + contFAS + "'" + ',' + "'tbanalisissensorial'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
+        var divBtns = $('<div class="form-group row justify-content-center"></div>').append(btnAdd).append(btnDel);
+        var colBTNS = $('<td>').append(divBtns);
+        $('<tr>', {id: 'fanalisissensorial' + contFAS}).append(colNum)
+                .append(colSelect)
+                .append(colvalortipo)
+                .append(colBTNS)
+                .appendTo(tb);
+        contFAS++;
+    }
+    agregarAnalisisSensorial();
 </script>

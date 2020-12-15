@@ -27,7 +27,7 @@
         </section>
 
         <section id="fotter">
-
+            <?php require_once './views/modules/footer.php'; ?>
         </section>
         <script src="<?php echo SERVERURL; ?>views/js/paginate.js"></script>
         <script defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLEAPIKEY; ?>"></script>
