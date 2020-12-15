@@ -51,7 +51,7 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                     <div class="form-group row">
                         <label for="fechaobtencion" class="col-sm-2 col-form-label">Fecha obtencion:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="fechaobtencion" placeholder="Ingrese la fecha de obtencion de la muestra">
+                            <input type="date" class="form-control" id="fechaobtencion" placeholder="Ingrese la fecha de obtencion de la muestra">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -157,7 +157,7 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -166,7 +166,7 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar cambios</button>
+                <button id="btnGuardarMuestra" type="button" class="btn btn-primary">Guardar cambios</button>
             </div>
         </div>
     </div>
@@ -290,4 +290,18 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
         contFAS++;
     }
     agregarAnalisisSensorial();
+</script>
+
+<script>
+    $(document).on("click", "#btnGuardarMuestra", function (event) {
+        var mst = {};
+        mst['cacaotipos'] = [];
+        
+        $.each($("#tipoCacaotb tbody tr"), function (index, item) {
+            mst.cacaotipos.push($(item).find("select").val());
+        });
+        
+        
+
+    });
 </script>

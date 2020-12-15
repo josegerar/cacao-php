@@ -123,9 +123,13 @@ $bosques = $bModel->getBosques();
     </div>
 </div>
 <script>
-    
+
     var ubicacionLocalidad;
-    
+    var map;
+    var marker;
+    var editLoc = false;
+    var rowEditLoc;
+
     class Localizacion {
         constructor(callback) {
             if (navigator.geolocation) {
@@ -147,8 +151,8 @@ $bosques = $bModel->getBosques();
             const options = {'center': posicion, 'zoom': 15};
             ubicacionLocalidad = posicion;
             const texto = `<h1>Mi plantacion</h1><p>Esta es la ubicacion de mi plantacion de cacao</p>`;
-            const map = new google.maps.Map(document.getElementById('ubicacionloc'), options);
-            const marker = new google.maps.Marker({'position': posicion, 'title': 'Mi ubicacion', 'map': map});
+            map = new google.maps.Map(document.getElementById('ubicacionloc'), options);
+            marker = new google.maps.Marker({'position': posicion, 'title': 'Mi ubicacion', 'map': map});
             const informacion = new google.maps.InfoWindow({content: texto});
             marker.addListener('click', function () {
                 informacion.open(map, marker);
@@ -165,7 +169,12 @@ $bosques = $bModel->getBosques();
 
 <script>
     $(document).on("click", "#btnGuardarLocalidad", function (event) {
-        var loc = {};
+        var loc;
+        if(editLoc === true){
+            loc = $('#' + rowEditLoc).data("data");
+        } else{
+            loc = {};
+        }
         loc['ciudad'] = $('#ciudadloc').val();
         loc['detalle'] = $('#detalleloc').val();
         loc['altitud'] = $('#altitudloc').val();
@@ -177,11 +186,45 @@ $bosques = $bModel->getBosques();
         loc['mosuelo'] = $('#mosueloloc').val();
         loc['velocidadviento'] = $('#velocidadvientoloc').val();
         loc['tiposuelo'] = $("#tiposuelo option:selected").val();
-        loc['velocidadviento'] = $('#tipobosque option:selected').val();
+        loc['tipobosque'] = $('#tipobosque option:selected').val();
         loc['ubicacion'] = ubicacionLocalidad;
-        //caso_estudio_data.localidades.push(loc);
-        addLocalidadesTable(loc);
-        $("#formNuevaLocalidad")[0].reset();
+        if(editLoc === true){
+            updateLocalidadTable(loc , rowEditLoc);
+        } else {
+            loc['muestras'] = [];
+            caso_estudio_data.localidades.push(loc);
+            addLocalidadesTable(loc);
+        }
         $('#modalnuevalocalidad').modal('hide');
+    });
+</script>
+
+<script>
+    function editarLocalidad(row) {
+        var loc = $('#' + row).data("data");
+        $('#ciudadloc').val(loc['ciudad']);
+        $('#detalleloc').val(loc['detalle']);
+        $('#altitudloc').val(loc['altitud']);
+        $('#temperaturamediaanualloc').val(loc['temperatura']);
+        $('#precipitacionmediaanualloc').val(loc['precipitacion']);
+        $('#humedadmediaanualloc').val(loc['humedad']);
+        $('#phsueloloc').val(loc['phsuelo']);
+        $('#cicsueloloc').val(loc['cicsuelo']);
+        $('#mosueloloc').val(loc['mosuelo']);
+        $('#velocidadvientoloc').val(loc['velocidadviento']);
+        $("#tiposuelo option[value=" + loc['tiposuelo'] + "]").prop("selected", true);
+        $("#tipobosque option[value=" + loc['tipobosque'] + "]").prop("selected", true);
+        marker.setPosition(loc['ubicacion']);
+        map.setCenter(marker.getPosition());
+        editLoc = true;
+        rowEditLoc = row;
+        $('#modalnuevalocalidad').modal('show');
+    }
+</script>
+
+<script>
+    $('#modalnuevalocalidad').on('hidden.bs.modal', function (e) {
+        $("#formNuevaLocalidad")[0].reset();
+        editLoc = false;
     });
 </script>

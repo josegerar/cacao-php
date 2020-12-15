@@ -54,7 +54,9 @@
 
 <script>
     document.getElementById("btnAtras2").addEventListener("click", function () {
+        $('#registrar-caso-estudio-tab a[href="#nav-localidad"]').removeClass('disabled');
         $('#registrar-caso-estudio-tab a[href="#nav-localidad"]').tab('show');
+        $('#registrar-caso-estudio-tab a[href="#nav-localidad"]').addClass('disabled');
     });
     document.getElementById("btnGuardarCaso").addEventListener("click", function () {
 
@@ -62,6 +64,61 @@
 
 
     });
+</script>
+
+<script>
+
+    function updateTableMuestras(data) {
+
+    }
+
+    function verMuestras(row) {
+        updateLocalidadMuestra();
+        var rowData = $("#" + row).data("data");
+        $("#localidadmuestra option").each(function () {
+
+            if (rowData === $(this).data("data")) {
+                $(this).prop("selected", true);
+            }
+        });
+
+        $("#localidadmuestra").change();
+        $('#registrar-caso-estudio-tab a[href="#nav-muestras"]').removeClass('disabled');
+        $('#registrar-caso-estudio-tab a[href="#nav-muestras"]').tab('show');
+        $('#registrar-caso-estudio-tab a[href="#nav-muestras"]').addClass('disabled');
+    }
+
+</script>
+
+<script>
+
+    function updateLocalidadMuestra() {
+
+        $('#localidadmuestra option').remove();
+
+        $.each($('#tblocalidades tbody tr'), function (index, item) {
+
+            var data = $(item).data("data");
+
+            var opt = $('<option>', {
+                'value': (index + 1),
+                'text': (index + 1) + ' - ' + data.ciudad
+            });
+
+            opt.data("data", data);
+
+            $('#localidadmuestra').append(opt);
+        });
+    }
+
+    $("#localidadmuestra").change(function (event) {
+
+        var data = $(this).find(":selected").data("data");
+
+        updateTableMuestras(data.muestras);
+
+    });
+
 </script>
 
 <?php
