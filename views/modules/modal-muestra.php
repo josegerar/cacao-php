@@ -178,6 +178,8 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
     var contFAS = 0;
     var tiposCacao = [];
     var tiposAnalisis = [];
+    var editMs = false;
+    var rowEditMs;
 
 <?php foreach ($tiposCacao as $tiposC) { ?>
         tiposCacao.push({'value': '<?php echo $tiposC->id; ?>', 'text': '<?php echo $tiposC->nombre; ?>'});
@@ -191,7 +193,7 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
 ?>
 
     // Aqui se crean los
-    function agregarTipoCacao() {
+    function agregarTipoCacao(data) {
         var tb = $('#tipoCacaotb tbody');
         var selectCacao = $('<select>', {
             class: 'form-control custom-select'
@@ -201,6 +203,9 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                 'value': item.value,
                 'text': item.text
             });
+            if (data == item.value) {
+                opt.prop('selected', true);
+            }
             selectCacao.append(opt);
         });
         var colNum = $('<th>', {
@@ -229,21 +234,21 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
             });
         }
     }
-    agregarTipoCacao();
+    agregarTipoCacao("");
 </script>
 <script>
 
-    function agregarRegisroFermentacion() {
+    function agregarRegistroFermentacion(data) {
         var tb = $('#tbregistrofermentacion tbody');
         var colNum = $('<th>', {
             'scope': 'row',
             'text': ($('#tbregistrofermentacion tbody tr').length + 1)
         });
-        var colhoraregistro = $('<td><input name="horaregistro" type="number" class="form-control" ></td>');
-        var colphtesta = $('<td><input name="phtesta" type="number" class="form-control" ></td>');
-        var colphcotiledon = $('<td><input name="phcotiledon" type="number" class="form-control" ></td>');
-        var coltemperatura = $('<td><input name="temperatura" type="number" class="form-control" ></td>');
-        var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarRegisroFermentacion()"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
+        var colhoraregistro = $('<td><input value="' + data.hora + '" name="horaregistro" type="number" class="form-control" ></td>');
+        var colphtesta = $('<td><input value="' + data.phtesta + '" name="phtesta" type="number" class="form-control" ></td>');
+        var colphcotiledon = $('<td><input value="' + data.phcotiledon + '" name="phcotiledon" type="number" class="form-control" ></td>');
+        var coltemperatura = $('<td><input value="' + data.temperatura + '" name="temperatura" type="number" class="form-control" ></td>');
+        var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarRegistroFermentacion({hora: \'\', phtesta: \'\', phcotiledon: \'\', temperatura: \'\'})"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
         var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'fregistrofermentacion" + contFRF + "'" + ',' + "'tbregistrofermentacion'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
         var divBtns = $('<div class="form-group row justify-content-center"></div>').append(btnAdd).append(btnDel);
         var colBTNS = $('<td>').append(divBtns);
@@ -256,11 +261,11 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                 .appendTo(tb);
         contFRF++;
     }
-    agregarRegisroFermentacion();
+    agregarRegistroFermentacion({hora: '', phtesta: '', phcotiledon: '', temperatura: ''});
 </script>
 
 <script>
-    function agregarAnalisisSensorial() {
+    function agregarAnalisisSensorial(data) {
         var tb = $('#tbanalisissensorial tbody');
         var colNum = $('<th>', {
             'scope': 'row',
@@ -274,11 +279,15 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                 'value': item.value,
                 'text': item.text
             });
+
+            if (data.tipo == item.value) {
+                opt.prop('selected', true);
+            }
             selectAnalisis.append(opt);
         });
         var colSelect = $('<td>').append(selectAnalisis);
-        var colvalortipo = $('<td><input type="number" class="form-control" ></td>');
-        var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarAnalisisSensorial()"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
+        var colvalortipo = $('<td><input value="' + data.valoranalisis + '" type="number" class="form-control" ></td>');
+        var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarAnalisisSensorial({tipo: \'\', valoranalisis: \'\'})"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
         var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'fanalisissensorial" + contFAS + "'" + ',' + "'tbanalisissensorial'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
         var divBtns = $('<div class="form-group row justify-content-center"></div>').append(btnAdd).append(btnDel);
         var colBTNS = $('<td>').append(divBtns);
@@ -289,19 +298,129 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                 .appendTo(tb);
         contFAS++;
     }
-    agregarAnalisisSensorial();
+    agregarAnalisisSensorial({tipo: '', valoranalisis: ''});
 </script>
 
 <script>
     $(document).on("click", "#btnGuardarMuestra", function (event) {
-        var mst = {};
+
+        var mst;
+
+        if (editMs === true) {
+            mst = $('#' + rowEditMs).data("data");
+        } else {
+            mst = {};
+        }
+
         mst['cacaotipos'] = [];
-        
+
         $.each($("#tipoCacaotb tbody tr"), function (index, item) {
             mst.cacaotipos.push($(item).find("select").val());
         });
-        
-        
 
+        mst['fecha'] = $('#fechaobtencion').val();
+        mst['cantidadmazorcas'] = $('#cantidadmazorcas').val();
+        mst['tipofermentador'] = $('#tipofermentador option:selected').val();
+        mst['tipofermentadortxt'] = $('#tipofermentador option:selected').text();
+        mst['tiempofermentacion'] = $('#tiempofermentacion').val();
+        mst['calidadfermentacion'] = $('#calidadfermentacion option:selected').val();
+        mst['calidadfermentaciontxt'] = $('#calidadfermentacion option:selected').text();
+
+        mst['fermentacionregistros'] = [];
+
+        $.each($("#tbregistrofermentacion tbody tr"), function (index, item) {
+            var ferreg = {};
+
+            ferreg['hora'] = $($(item).find('td')[0]).find('input').val();
+            ferreg['phtesta'] = $($(item).find('td')[1]).find('input').val();
+            ferreg['phcotiledon'] = $($(item).find('td')[2]).find('input').val();
+            ferreg['temperatura'] = $($(item).find('td')[3]).find('input').val();
+
+            mst.fermentacionregistros.push(ferreg);
+        });
+
+        mst['tiposecado'] = $('#tiposecado option:selected').val();
+        mst['tiposecadotxt'] = $('#tiposecado option:selected').text();
+        mst['tiemposecado'] = $('#tiemposecado').val();
+        mst['humedadpostsecado'] = $('#humedadpostsecado').val();
+        mst['pesopromedio'] = $('#pesopromedio').val();
+
+        mst['analisistipos'] = [];
+
+        $.each($("#tbanalisissensorial tbody tr"), function (index, item) {
+            var ferreg = {};
+
+            ferreg['tipo'] = $($(item).find('td')[0]).find('select option:selected').val();
+            ferreg['valoranalisis'] = $($(item).find('td')[1]).find('input').val();
+
+            mst.analisistipos.push(ferreg);
+        });
+
+        if (editMs === true) {
+            updateMuestrasTable(mst, rowEditMs);
+        } else {
+            var dataLoc = $("#localidadmuestra").find(":selected").data("data");
+            dataLoc.muestras.push(mst);
+            addMuestrasTable(mst);
+        }
+
+        $('#modalnuevamuestra').modal('hide');
+    });
+</script>
+
+<script>
+    function editarMuestras(row) {
+
+        $("#tipoCacaotb > tbody").html("");
+        $("#tbregistrofermentacion > tbody").html("");
+        $("#tbanalisissensorial > tbody").html("");
+
+        var mst = $('#' + row).data("data");
+        
+        mst.cacaotipos.forEach(function (item, index) {
+            agregarTipoCacao(item);
+        });
+
+        $('#fechaobtencion').val(mst['fecha']);
+        $('#cantidadmazorcas').val(mst['cantidadmazorcas']);
+        $("#tipofermentador option[value=" + mst['tipofermentador'] + "]").prop("selected", true);
+        $('#tiempofermentacion').val(mst['tiempofermentacion']);
+        $("#calidadfermentacion option[value=" + mst['calidadfermentacion'] + "]").prop("selected", true);
+
+        mst.fermentacionregistros.forEach(function (item, index) {
+            agregarRegistroFermentacion(item);
+        });
+
+        $("#tiposecado option[value=" + mst['tiposecado'] + "]").prop("selected", true);
+        $('#tiemposecado').val(mst['tiemposecado']);
+        $('#humedadpostsecado').val(mst['humedadpostsecado']);
+        $('#pesopromedio').val(mst['pesopromedio']);
+
+        mst.analisistipos.forEach(function (item, index) {
+            agregarAnalisisSensorial(item);
+        });
+
+        editMs = true;
+        rowEditMs = row;
+
+        $('#modalnuevamuestra').modal('show');
+    }
+</script>
+
+<script>
+    $('#modalnuevamuestra').on('hidden.bs.modal', function (e) {
+
+        $("#formNuevaMuestra")[0].reset();
+
+        editMs = false;
+        rowEditMs = "";
+
+        $("#tipoCacaotb > tbody").html("");
+        $("#tbregistrofermentacion > tbody").html("");
+        $("#tbanalisissensorial > tbody").html("");
+
+        agregarTipoCacao("");
+        agregarRegistroFermentacion({hora: '', phtesta: '', phcotiledon: '', temperatura: ''});
+        agregarAnalisisSensorial({tipo: '', valoranalisis: ''});
     });
 </script>

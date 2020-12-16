@@ -17,7 +17,7 @@
         </button>
     </div>
     <div class="form-group row">
-        <table class="table table-hover">
+        <table id="tbMuestras" class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -30,18 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Fermentador 1</td>
-                    <td>Secado 1</td>
-                    <td>Calidad 1</td>
-                    <td>Fecha 1</td>
-                    <td>Peso pepa 1</td>
-                    <td>
-                        <input class="btn btn-light btn-outline-secondary" type="button" value="Editar">
-                        <input class="btn btn-light btn-outline-secondary" type="button" value="Eliminar">
-                    </td>
-                </tr>
+                
             </tbody>
         </table>
     </div>
@@ -53,6 +42,9 @@
 </form>
 
 <script>
+
+    var contFTBM = 0;
+
     document.getElementById("btnAtras2").addEventListener("click", function () {
         $('#registrar-caso-estudio-tab a[href="#nav-localidad"]').removeClass('disabled');
         $('#registrar-caso-estudio-tab a[href="#nav-localidad"]').tab('show');
@@ -79,10 +71,10 @@
 
             if (rowData === $(this).data("data")) {
                 $(this).prop("selected", true);
+                $("#localidadmuestra").change();
             }
         });
 
-        $("#localidadmuestra").change();
         $('#registrar-caso-estudio-tab a[href="#nav-muestras"]').removeClass('disabled');
         $('#registrar-caso-estudio-tab a[href="#nav-muestras"]').tab('show');
         $('#registrar-caso-estudio-tab a[href="#nav-muestras"]').addClass('disabled');
@@ -119,6 +111,57 @@
 
     });
 
+</script>
+
+<script>
+    function addMuestrasTable(data) {
+
+        var tb = $('#tbMuestras tbody');
+        var colNum = $('<th>', {
+            'scope': 'row',
+            'text': ($('#tbMuestras tbody tr').length + 1)
+        });
+
+        var colFermentador = $('<td>', {'text': data.tipofermentadortxt});
+        var colSecado = $('<td>', {'text': data.tiposecadotxt});
+        var colCalidad = $('<td>', {'text': data.calidadfermentaciontxt});
+        var colFecha = $('<td>', {'text': data.fecha});
+        var colPesopepa = $('<td>', {'text': data.pesopromedio});
+
+        var btnEdit = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="editarMuestras(' + "'fmuestras" + contFTBM + "'" + ')"><i class="fa fa-pencil-square-o fa-2" aria-hidden="true"></i></button>');
+        var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'fmuestras" + contFTBM + "'" + ',' + "'tbMuestras'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
+        var colBTNS = $('<td>').append(btnEdit).append(btnDel);
+        var filamuestras = $('<tr>', {id: 'fmuestras' + contFTBM});
+        filamuestras.data("data", data);
+        filamuestras.append(colNum)
+                .append(colFermentador)
+                .append(colSecado)
+                .append(colCalidad)
+                .append(colFecha)
+                .append(colPesopepa)
+                .append(colBTNS)
+                .appendTo(tb);
+        contFTBM++;
+    }
+</script>
+
+<script>
+    function updateMuestrasTable(data, row){
+        
+        $.each($('#' + row + " td"), function (index, item) {
+            if (index === 0)
+                $(item).text(data.tipofermentadortxt);
+            else if (index === 1)
+                $(item).text(data.tiposecadotxt);
+            else if (index === 2)
+                $(item).text(data.calidadfermentaciontxt);
+            else if (index === 3)
+                $(item).text(data.fecha);
+            else if (index === 4)
+                $(item).text(data.pesopromedio);
+        });
+        
+    }
 </script>
 
 <?php

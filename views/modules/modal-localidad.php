@@ -224,7 +224,10 @@ $bosques = $bModel->getBosques();
 
 <script>
     $('#modalnuevalocalidad').on('hidden.bs.modal', function (e) {
+        
         $("#formNuevaLocalidad")[0].reset();
+        
         editLoc = false;
+        rowEditLoc = "";
     });
 </script>
