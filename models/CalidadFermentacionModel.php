@@ -1,8 +1,9 @@
 <?php
+
 require_once $GLOBALS["ROOT"] . '/models/mainModel.php';
 
-class CalidadFermentacionModel extends mainModel{
-    
+class CalidadFermentacionModel extends mainModel {
+
     public function getCalidadades() {
         $query = mainModel::getConnection()->prepare("SELECT id, nombre, descripcion
             FROM public.calidad_fermentacion;");
@@ -10,5 +11,5 @@ class CalidadFermentacionModel extends mainModel{
         $result = $query->fetchAll(PDO::FETCH_OBJ);
         return $result;
     }
-    
+
 }

@@ -12,4 +12,14 @@ class CacaoModel extends mainModel{
         return $result;
     }
     
+    public function saveMuestraCacaoTipos($muestraID, $tipoID){
+        $sql = mainModel::getConnection()->prepare("INSERT INTO public.tipo_cacao_muestra(
+	id_muestra, id_tipo_cacao)
+	VALUES (:muestraID, :tipoID);");
+        $sql->bindParam(":muestraID", $muestraID);
+        $sql->bindParam(":tipoID", $tipoID);
+        $sql->execute();
+        $result = $sql->fetchAll(PDO::FETCH_OBJ);
+        return $result;
+    }
 }

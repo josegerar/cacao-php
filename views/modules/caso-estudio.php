@@ -9,6 +9,12 @@
         </div>
     </div>
     <div class="form-group row">
+        <label for="fecharealizacion" class="col-sm-2 col-form-label">Fecha realización:</label>
+        <div class="col-sm-10">
+            <input type="date" class="form-control" id="fecharealizacion" required placeholder="Ingrese el nombre o titulo de un caso de estudio">
+        </div>
+    </div>
+    <div class="form-group row">
         <label for="resumen" class="col-sm-2 col-form-label">Resumen:</label>
         <div class="col-sm-10 ">
             <textarea id="resumen" class="form-control" rows="3" placeholder="Ingrese resumen de caso estudio"></textarea>
@@ -33,6 +39,7 @@
             $('#registrar-caso-estudio-tab a[href="#nav-localidad"]').tab('show');
             $('#registrar-caso-estudio-tab a[href="#nav-localidad"]').addClass('disabled');
             caso_estudio_data['nombre'] = $('#casoestudio').val();
+            caso_estudio_data['fecha'] = $('#fecharealizacion').val();
             caso_estudio_data['resumen'] = $('#resumen').val();
             if (!(caso_estudio_data.hasOwnProperty("localidades"))){
                 caso_estudio_data['localidades'] = [];

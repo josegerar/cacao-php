@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
     </div>
@@ -53,16 +53,27 @@
     document.getElementById("btnGuardarCaso").addEventListener("click", function () {
 
 //Aqui se guardara la informacion
+        var data = {'type': 'save', 'object': 'caso-estudio', 'data': caso_estudio_data};
+        console.log(JSON.stringify(caso_estudio_data));
+        
+        $.ajax({
+            method: "POST",
+            url: serverURL + "ajax/api.php",
+            data: data,
+            dataType: "json"
+        }).done(function (data, textStatus, jqXHR) {
+            alert("Datos guardados correctamente.");
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert("La solicitud a fallado: " + textStatus);
+            console.log(jqXHR);
+            console.log(errorThrown);
+        });
 
 
     });
 </script>
 
 <script>
-
-    function updateTableMuestras(data) {
-
-    }
 
     function verMuestras(row) {
         updateLocalidadMuestra();
@@ -107,7 +118,11 @@
 
         var data = $(this).find(":selected").data("data");
 
-        updateTableMuestras(data.muestras);
+        $("#tbMuestras > tbody").html("");
+
+        data.muestras.forEach(function (item, index) {
+            addMuestrasTable(item);
+        });
 
     });
 
@@ -146,8 +161,8 @@
 </script>
 
 <script>
-    function updateMuestrasTable(data, row){
-        
+    function updateMuestrasTable(data, row) {
+
         $.each($('#' + row + " td"), function (index, item) {
             if (index === 0)
                 $(item).text(data.tipofermentadortxt);
@@ -160,7 +175,7 @@
             else if (index === 4)
                 $(item).text(data.pesopromedio);
         });
-        
+
     }
 </script>
 
