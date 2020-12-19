@@ -136,31 +136,31 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                     <div class="form-group row">
                         <label for="humedadpostsecado" class="col-sm-2 col-form-label">Humedad post-secado:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="humedadpostsecado" placeholder="Ingrese el valor de la humedad despues del secado">
+                            <input type="number" step=".01" class="form-control" id="humedadpostsecado" placeholder="Ingrese el valor de la humedad despues del secado">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="pesopromedio" class="col-sm-2 col-form-label">Peso pepa:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="pesopromedio" placeholder="Ingrese el promedo del peso de la pepa">
+                            <input type="number" step=".01" class="form-control" id="pesopromedio" placeholder="Ingrese el promedo del peso de la pepa">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="longitud" class="col-sm-2 col-form-label">Longitud pepa:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="longitud" placeholder="Ingrese la longitud media de la muestra">
+                            <input type="number" step=".01" class="form-control" id="longitud" placeholder="Ingrese la longitud media de la muestra">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="ancho" class="col-sm-2 col-form-label">Ancho pepa:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="ancho" placeholder="Ingrese el ancho medio de la muestra">
+                            <input type="number" step=".01" class="form-control" id="ancho" placeholder="Ingrese el ancho medio de la muestra">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="espesor" class="col-sm-2 col-form-label">Espesor pepa:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="espesor" placeholder="Ingrese el espesor medio de la muestra">
+                            <input type="number" step=".01" class="form-control" id="espesor" placeholder="Ingrese el espesor medio de la muestra">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -266,9 +266,9 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
             'text': ($('#tbregistrofermentacion tbody tr').length + 1)
         });
         var colhoraregistro = $('<td><input value="' + data.hora + '" name="horaregistro" type="number" class="form-control" ></td>');
-        var colphtesta = $('<td><input value="' + data.phtesta + '" name="phtesta" type="number" class="form-control" ></td>');
-        var colphcotiledon = $('<td><input value="' + data.phcotiledon + '" name="phcotiledon" type="number" class="form-control" ></td>');
-        var coltemperatura = $('<td><input value="' + data.temperatura + '" name="temperatura" type="number" class="form-control" ></td>');
+        var colphtesta = $('<td><input step=".01" value="' + data.phtesta + '" name="phtesta" type="number" class="form-control" ></td>');
+        var colphcotiledon = $('<td><input step=".01" value="' + data.phcotiledon + '" name="phcotiledon" type="number" class="form-control" ></td>');
+        var coltemperatura = $('<td><input step=".01" value="' + data.temperatura + '" name="temperatura" type="number" class="form-control" ></td>');
         var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarRegistroFermentacion({hora: \'\', phtesta: \'\', phcotiledon: \'\', temperatura: \'\'})"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
         var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'fregistrofermentacion" + contFRF + "'" + ',' + "'tbregistrofermentacion'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
         var divBtns = $('<div class="form-group row justify-content-center"></div>').append(btnAdd).append(btnDel);
@@ -307,7 +307,7 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
             selectAnalisis.append(opt);
         });
         var colSelect = $('<td>').append(selectAnalisis);
-        var colvalortipo = $('<td><input value="' + data.valoranalisis + '" type="number" class="form-control" ></td>');
+        var colvalortipo = $('<td><input step=".01" value="' + data.valoranalisis + '" type="number" class="form-control" ></td>');
         var btnAdd = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="agregarAnalisisSensorial({tipo: \'\', valoranalisis: \'\'})"><i class="fa fa-plus fa-2" aria-hidden="true"></i></button>');
         var btnDel = $('<button type="button" class="btn btn-light btn-outline-secondary btn-sm" onclick="borrarFila(' + "'fanalisissensorial" + contFAS + "'" + ',' + "'tbanalisissensorial'" + ')"><i class="fa fa-trash fa-2" aria-hidden="true"></i></button>');
         var divBtns = $('<div class="form-group row justify-content-center"></div>').append(btnAdd).append(btnDel);

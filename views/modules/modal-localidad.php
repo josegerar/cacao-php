@@ -68,43 +68,43 @@ $bosques = $bModel->getBosques();
                     <div class="form-group row">
                         <label for="temperaturamediaanualloc" class="col-sm-2 col-form-label">Temperatura(°C):</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="temperaturamediaanualloc" placeholder="Ingrese la temperatura media de la localidad">
+                            <input type="number" step=".01" class="form-control" id="temperaturamediaanualloc" placeholder="Ingrese la temperatura media de la localidad">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="precipitacionmediaanualloc" class="col-sm-2 col-form-label">Precipitacion media anual:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="precipitacionmediaanualloc" placeholder="Ingrese el valor de precipitacion">
+                            <input type="number"  class="form-control" id="precipitacionmediaanualloc" placeholder="Ingrese el valor de precipitacion">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="humedadmediaanualloc" class="col-sm-2 col-form-label">Humedad media anual:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="humedadmediaanualloc" placeholder="Ingrese el valor de humedad del ambiente">
+                            <input type="number" step=".01" class="form-control" id="humedadmediaanualloc" placeholder="Ingrese el valor de humedad del ambiente">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="phsueloloc" class="col-sm-2 col-form-label">PH del suelo:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="phsueloloc" placeholder="Ingrese el valor del PH del suelo">
+                            <input type="number" step=".01" class="form-control" id="phsueloloc" placeholder="Ingrese el valor del PH del suelo">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="cicsueloloc" class="col-sm-2 col-form-label">CIC del suelo:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="cicsueloloc" placeholder="Ingrese el valor del CIC del suelo">
+                            <input type="number" step=".01" class="form-control" id="cicsueloloc" placeholder="Ingrese el valor del CIC del suelo">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="mosueloloc" class="col-sm-2 col-form-label">MO del suelo:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="mosueloloc" placeholder="Ingrese el valor del MO del suelo">
+                            <input type="number" step=".01" class="form-control" id="mosueloloc" placeholder="Ingrese el valor del MO del suelo">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="velocidadvientoloc" class="col-sm-2 col-form-label">Velocidad del viento:</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="velocidadvientoloc" placeholder="Ingrese el valor de la velocidad media del viento">
+                            <input type="number" step=".01" class="form-control" id="velocidadvientoloc" placeholder="Ingrese el valor de la velocidad media del viento">
                         </div>
                     </div>
                     <div class="form-group row">
