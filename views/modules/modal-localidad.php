@@ -19,15 +19,18 @@ $bosques = $bModel->getBosques();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formNuevaLocalidad" class="small">
+                <form id="formNuevaLocalidad" class="small needs-validation">
                     <div class="form-group row">
-                        <label for="ciudadloc" class="col-sm-2 col-form-label">Ciudad:</label>
+                        <label for="ciudadloc" class="col-sm-2 col-form-label">Zona plantacion:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="ciudadloc" placeholder="Ingrese la ciudad donde se encuentra la plantacion">
+                            <input type="text" required class="form-control" id="ciudadloc" placeholder="Ingrese la ciudad donde se encuentra la plantacion">
+                            <div class="invalid-feedback">
+                                Zona plantacion requerida.
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="detalleloc" class="col-sm-2 col-form-label">Detalles:</label>
+                        <label for="detalleloc" class="col-sm-2 col-form-label">Detalle zona:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="detalleloc" placeholder="Ingrese informacion adiccional de la localidad">
                         </div>
@@ -169,33 +172,55 @@ $bosques = $bModel->getBosques();
 
 <script>
     $(document).on("click", "#btnGuardarLocalidad", function (event) {
-        var loc;
-        if(editLoc === true){
-            loc = $('#' + rowEditLoc).data("data");
-        } else{
-            loc = {};
+
+        $('#formNuevaLocalidad').addClass('was-validated');
+        var form = document.getElementById("formNuevaLocalidad");
+        if (form.checkValidity() === true) {
+
+            var loc;
+            if (editLoc === true) {
+                loc = $('#' + rowEditLoc).data("data");
+            } else {
+                loc = {};
+            }
+            loc['ciudad'] = $('#ciudadloc').val();
+            loc['detalle'] = $('#detalleloc').val();
+            loc['altitud'] = $('#altitudloc').val();
+            if (loc['altitud'] === "")
+                loc['altitud'] = 0;
+            loc['temperatura'] = $('#temperaturamediaanualloc').val();
+            if (loc['temperatura'] === "")
+                loc['temperatura'] = 0;
+            loc['precipitacion'] = $('#precipitacionmediaanualloc').val();
+            if (loc['precipitacion'] === "")
+                loc['precipitacion'] = 0;
+            loc['humedad'] = $('#humedadmediaanualloc').val();
+            if (loc['humedad'] === "")
+                loc['humedad'] = 0;
+            loc['phsuelo'] = $('#phsueloloc').val();
+            if (loc['phsuelo'] === "")
+                loc['phsuelo'] = 0;
+            loc['cicsuelo'] = $('#cicsueloloc').val();
+            if (loc['cicsuelo'] === "")
+                loc['cicsuelo'] = 0;
+            loc['mosuelo'] = $('#mosueloloc').val();
+            if (loc['mosuelo'] === "")
+                loc['mosuelo'] = 0;
+            loc['velocidadviento'] = $('#velocidadvientoloc').val();
+            if (loc['velocidadviento'] === "")
+                loc['velocidadviento'] = 0;
+            loc['tiposuelo'] = $("#tiposuelo option:selected").val();
+            loc['tipobosque'] = $('#tipobosque option:selected').val();
+            loc['ubicacion'] = ubicacionLocalidad;
+            if (editLoc === true) {
+                updateLocalidadTable(loc, rowEditLoc);
+            } else {
+                loc['muestras'] = [];
+                caso_estudio_data.localidades.push(loc);
+                addLocalidadesTable(loc);
+            }
+            $('#modalnuevalocalidad').modal('hide');
         }
-        loc['ciudad'] = $('#ciudadloc').val();
-        loc['detalle'] = $('#detalleloc').val();
-        loc['altitud'] = $('#altitudloc').val();
-        loc['temperatura'] = $('#temperaturamediaanualloc').val();
-        loc['precipitacion'] = $('#precipitacionmediaanualloc').val();
-        loc['humedad'] = $('#humedadmediaanualloc').val();
-        loc['phsuelo'] = $('#phsueloloc').val();
-        loc['cicsuelo'] = $('#cicsueloloc').val();
-        loc['mosuelo'] = $('#mosueloloc').val();
-        loc['velocidadviento'] = $('#velocidadvientoloc').val();
-        loc['tiposuelo'] = $("#tiposuelo option:selected").val();
-        loc['tipobosque'] = $('#tipobosque option:selected').val();
-        loc['ubicacion'] = ubicacionLocalidad;
-        if(editLoc === true){
-            updateLocalidadTable(loc , rowEditLoc);
-        } else {
-            loc['muestras'] = [];
-            caso_estudio_data.localidades.push(loc);
-            addLocalidadesTable(loc);
-        }
-        $('#modalnuevalocalidad').modal('hide');
     });
 </script>
 
@@ -224,9 +249,9 @@ $bosques = $bModel->getBosques();
 
 <script>
     $('#modalnuevalocalidad').on('hidden.bs.modal', function (e) {
-        
+
         $("#formNuevaLocalidad")[0].reset();
-        
+
         editLoc = false;
         rowEditLoc = "";
     });

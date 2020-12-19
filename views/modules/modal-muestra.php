@@ -30,7 +30,7 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formNuevaMuestra"  class="small">
+                <form id="formNuevaMuestra"  class="small needs-validation" >
                     <div class="form-group row">
                         <label for="tipoCacaotb" class="col-sm-2 col-form-label">Tipo de cacao:</label>
                         <div class="col-sm-10 position-relative" style="overflow-y: scroll; max-height: 160px;">
@@ -51,7 +51,10 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                     <div class="form-group row">
                         <label for="fechaobtencion" class="col-sm-2 col-form-label">Fecha obtencion:</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="fechaobtencion" placeholder="Ingrese la fecha de obtencion de la muestra">
+                            <input type="date" required class="form-control" id="fechaobtencion" placeholder="Ingrese la fecha de obtencion de la muestra">
+                            <div class="invalid-feedback">
+                                Fecha de obtencion de muestra requerida.
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -137,9 +140,27 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="pesopromedio" class="col-sm-2 col-form-label">Peso promedio:</label>
+                        <label for="pesopromedio" class="col-sm-2 col-form-label">Peso pepa:</label>
                         <div class="col-sm-10">
                             <input type="number" class="form-control" id="pesopromedio" placeholder="Ingrese el promedo del peso de la pepa">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="longitud" class="col-sm-2 col-form-label">Longitud pepa:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="longitud" placeholder="Ingrese la longitud media de la muestra">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ancho" class="col-sm-2 col-form-label">Ancho pepa:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="ancho" placeholder="Ingrese el ancho medio de la muestra">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="espesor" class="col-sm-2 col-form-label">Espesor pepa:</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="espesor" placeholder="Ingrese el espesor medio de la muestra">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -304,67 +325,100 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
 <script>
     $(document).on("click", "#btnGuardarMuestra", function (event) {
 
-        var mst;
+        $('#formNuevaMuestra').addClass('was-validated');
+        var form = document.getElementById("formNuevaMuestra");
 
-        if (editMs === true) {
-            mst = $('#' + rowEditMs).data("data");
-        } else {
-            mst = {};
+        if (form.checkValidity() === true) {
+
+            var mst;
+
+            if (editMs === true) {
+                mst = $('#' + rowEditMs).data("data");
+            } else {
+                mst = {};
+            }
+
+            mst['cacaotipos'] = [];
+
+            $.each($("#tipoCacaotb tbody tr"), function (index, item) {
+                mst.cacaotipos.push($(item).find("select").val());
+            });
+
+            mst['fecha'] = $('#fechaobtencion').val();
+            mst['cantidadmazorcas'] = $('#cantidadmazorcas').val();
+            if (mst['cantidadmazorcas'] === "")
+                mst['cantidadmazorcas'] = 0;
+            mst['tipofermentador'] = $('#tipofermentador option:selected').val();
+            mst['tipofermentadortxt'] = $('#tipofermentador option:selected').text();
+            mst['tiempofermentacion'] = $('#tiempofermentacion').val();
+            if (mst['tiempofermentacion'] === "")
+                mst['tiempofermentacion'] = 0;
+            mst['calidadfermentacion'] = $('#calidadfermentacion option:selected').val();
+            mst['calidadfermentaciontxt'] = $('#calidadfermentacion option:selected').text();
+
+            mst['fermentacionregistros'] = [];
+
+            $.each($("#tbregistrofermentacion tbody tr"), function (index, item) {
+                var ferreg = {};
+
+                ferreg['hora'] = $($(item).find('td')[0]).find('input').val();
+                if (ferreg['hora'] === "")
+                    ferreg['hora'] = 0;
+                ferreg['phtesta'] = $($(item).find('td')[1]).find('input').val();
+                if (ferreg['phtesta'] === "")
+                    ferreg['phtesta'] = 0;
+                ferreg['phcotiledon'] = $($(item).find('td')[2]).find('input').val();
+                if (ferreg['phcotiledon'] === "")
+                    ferreg['phcotiledon'] = 0;
+                ferreg['temperatura'] = $($(item).find('td')[3]).find('input').val();
+                if (ferreg['temperatura'] === "")
+                    ferreg['temperatura'] = 0;
+
+                mst.fermentacionregistros.push(ferreg);
+            });
+
+            mst['tiposecado'] = $('#tiposecado option:selected').val();
+            mst['tiposecadotxt'] = $('#tiposecado option:selected').text();
+            mst['tiemposecado'] = $('#tiemposecado').val();
+            if (mst['tiemposecado'] === "")
+                mst['tiemposecado'] = 0;
+            mst['humedadpostsecado'] = $('#humedadpostsecado').val();
+            if (mst['humedadpostsecado'] === "")
+                mst['humedadpostsecado'] = 0;
+            mst['pesopromedio'] = $('#pesopromedio').val();
+            if (mst['pesopromedio'] === "")
+                mst['pesopromedio'] = 0;
+            mst['longitud'] = $('#longitud').val();
+            if (mst['longitud'] === "")
+                mst['longitud'] = 0;
+            mst['ancho'] = $('#ancho').val();
+            if (mst['ancho'] === "")
+                mst['ancho'] = 0;
+            mst['espesor'] = $('#espesor').val();
+            if (mst['espesor'] === "")
+                mst['espesor'] = 0;
+            mst['analisistipos'] = [];
+
+            $.each($("#tbanalisissensorial tbody tr"), function (index, item) {
+                var ferreg = {};
+
+                ferreg['tipo'] = $($(item).find('td')[0]).find('select option:selected').val();
+                ferreg['valoranalisis'] = $($(item).find('td')[1]).find('input').val();
+                if (ferreg['valoranalisis'] === "")
+                    ferreg['valoranalisis'] = 0;
+                mst.analisistipos.push(ferreg);
+            });
+
+            if (editMs === true) {
+                updateMuestrasTable(mst, rowEditMs);
+            } else {
+                var dataLoc = $("#localidadmuestra").find(":selected").data("data");
+                dataLoc.muestras.push(mst);
+                addMuestrasTable(mst);
+            }
+
+            $('#modalnuevamuestra').modal('hide');
         }
-
-        mst['cacaotipos'] = [];
-
-        $.each($("#tipoCacaotb tbody tr"), function (index, item) {
-            mst.cacaotipos.push($(item).find("select").val());
-        });
-
-        mst['fecha'] = $('#fechaobtencion').val();
-        mst['cantidadmazorcas'] = $('#cantidadmazorcas').val();
-        mst['tipofermentador'] = $('#tipofermentador option:selected').val();
-        mst['tipofermentadortxt'] = $('#tipofermentador option:selected').text();
-        mst['tiempofermentacion'] = $('#tiempofermentacion').val();
-        mst['calidadfermentacion'] = $('#calidadfermentacion option:selected').val();
-        mst['calidadfermentaciontxt'] = $('#calidadfermentacion option:selected').text();
-
-        mst['fermentacionregistros'] = [];
-
-        $.each($("#tbregistrofermentacion tbody tr"), function (index, item) {
-            var ferreg = {};
-
-            ferreg['hora'] = $($(item).find('td')[0]).find('input').val();
-            ferreg['phtesta'] = $($(item).find('td')[1]).find('input').val();
-            ferreg['phcotiledon'] = $($(item).find('td')[2]).find('input').val();
-            ferreg['temperatura'] = $($(item).find('td')[3]).find('input').val();
-
-            mst.fermentacionregistros.push(ferreg);
-        });
-
-        mst['tiposecado'] = $('#tiposecado option:selected').val();
-        mst['tiposecadotxt'] = $('#tiposecado option:selected').text();
-        mst['tiemposecado'] = $('#tiemposecado').val();
-        mst['humedadpostsecado'] = $('#humedadpostsecado').val();
-        mst['pesopromedio'] = $('#pesopromedio').val();
-
-        mst['analisistipos'] = [];
-
-        $.each($("#tbanalisissensorial tbody tr"), function (index, item) {
-            var ferreg = {};
-
-            ferreg['tipo'] = $($(item).find('td')[0]).find('select option:selected').val();
-            ferreg['valoranalisis'] = $($(item).find('td')[1]).find('input').val();
-
-            mst.analisistipos.push(ferreg);
-        });
-
-        if (editMs === true) {
-            updateMuestrasTable(mst, rowEditMs);
-        } else {
-            var dataLoc = $("#localidadmuestra").find(":selected").data("data");
-            dataLoc.muestras.push(mst);
-            addMuestrasTable(mst);
-        }
-
-        $('#modalnuevamuestra').modal('hide');
     });
 </script>
 
@@ -376,7 +430,7 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
         $("#tbanalisissensorial > tbody").html("");
 
         var mst = $('#' + row).data("data");
-        
+
         mst.cacaotipos.forEach(function (item, index) {
             agregarTipoCacao(item);
         });
@@ -395,6 +449,9 @@ $tiposAnalisis = $asModel->getTipoAnalisis();
         $('#tiemposecado').val(mst['tiemposecado']);
         $('#humedadpostsecado').val(mst['humedadpostsecado']);
         $('#pesopromedio').val(mst['pesopromedio']);
+        $('#longitud').val(mst['longitud']);
+        $('#ancho').val(mst['ancho']);
+        $('#espesor').val(mst['espesor']);
 
         mst.analisistipos.forEach(function (item, index) {
             agregarAnalisisSensorial(item);

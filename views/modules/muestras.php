@@ -52,10 +52,9 @@
     });
     document.getElementById("btnGuardarCaso").addEventListener("click", function () {
 
-//Aqui se guardara la informacion
+        //Aqui se guardara la informacion
         var data = {'type': 'save', 'object': 'caso-estudio', 'data': caso_estudio_data};
-        console.log(JSON.stringify(caso_estudio_data));
-        
+
         $.ajax({
             method: "POST",
             url: serverURL + "ajax/api.php",

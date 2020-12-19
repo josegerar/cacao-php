@@ -12,6 +12,9 @@
         <label for="fecharealizacion" class="col-sm-2 col-form-label">Fecha realización:</label>
         <div class="col-sm-10">
             <input type="date" class="form-control" id="fecharealizacion" required placeholder="Ingrese el nombre o titulo de un caso de estudio">
+            <div class="invalid-feedback">
+                Fecha de realizacion requerida.
+            </div>
         </div>
     </div>
     <div class="form-group row">

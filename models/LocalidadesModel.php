@@ -22,8 +22,6 @@ class LocalidadesModel extends mainModel {
         $sql->bindParam(":cicsuelo", $data['cicsuelo']);
         $sql->bindParam(":mosuelo", $data['mosuelo']);
         $sql->bindParam(":velocidad", $data['velocidadviento']);
-        
-        //$sql->bindParam(":ubicacion", $ubSQL);
         $sql->bindParam(":ciudad", $data['ciudad']);
         $sql->bindParam(":descripcion", $data['detalle']);
         $sql->execute();

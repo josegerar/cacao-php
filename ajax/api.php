@@ -10,6 +10,8 @@ $data = $_REQUEST['data'];
 if ($OBJECT == "caso-estudio"){
     require_once $GLOBALS['ROOT'] . "/controller/CasoEstudioController.php";
     $casoEstudioC = new CasoEstudioController();
-    $casoEstudioC->save($data);
+    if($type == "save"){
+        $casoEstudioC->save($data);
+    }
     echo "1";
 }
